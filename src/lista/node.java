@@ -1,3 +1,5 @@
+package lista;
+
 public class node {
     private Integer informacao;
     private node proximo;

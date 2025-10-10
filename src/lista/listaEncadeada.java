@@ -1,4 +1,4 @@
-import java.util.Scanner;
+package lista;
 
 public class listaEncadeada {
     private node Lista;
@@ -50,7 +50,7 @@ public class listaEncadeada {
 
         Lista=novoPrimeiro;
     }
-    public void insereDepois(node node, int informacao){ //node é o ponto 0
+    public void insereDepois(node node, int informacao){ //lista.node é o ponto 0
         node novoDepois = new node();
         novoDepois.setInformacao(informacao);
         //PREGYUÇA
@@ -105,7 +105,7 @@ public class listaEncadeada {
     }
 
     public node removeUltimo(){
-        node  penultimo = Lista;
+        node penultimo = Lista;
         while ((penultimo.getProximo()).getProximo() != null) {
             penultimo= penultimo.getProximo();
         }
