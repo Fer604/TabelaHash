@@ -1,3 +1,5 @@
+package tabela;
+
 public class registro {
     private final String codigo;
 

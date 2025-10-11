@@ -1,18 +1,18 @@
 package lista;
-
+import tabela.registro;
 public class node {
-    private Integer informacao;
+    private tabela.registro registro;
     private node proximo;
     public node()
     {
-        this.informacao = null;
+        this.registro = null;
         this.proximo = null;
     }
-    public Integer getInformacao() {
-        return informacao;
+    public registro getInformacao() {
+        return registro;
     }
-    public void setInformacao(Integer informacao) {
-        this.informacao = informacao;
+    public void setInformacao(registro registro) {
+        this.registro = registro;
     }
     public node getProximo() {
         return proximo;

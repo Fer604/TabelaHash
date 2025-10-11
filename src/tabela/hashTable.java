@@ -1,9 +1,11 @@
+package tabela;
+
 public interface hashTable {
     //interface base(os os metodos que uma tabela PRECISA ter)
 
     void inserir(registro r);
 
-    boolean buscar(registro r); // como pela especificação do trabalho "implementar e analisar o desempenho de diferentes tabelas hash em Java." só nos interessa se o registro existe ou não para a analise de desempenho logo não retorna o registro e sim boolean
+    boolean buscar(registro r); // como pela especificação do trabalho "implementar e analisar o desempenho de diferentes tabelas hash em Java." só nos interessa se o tabela.registro existe ou não para a analise de desempenho logo não retorna o tabela.registro e sim boolean
 
     int getColisoes();
 

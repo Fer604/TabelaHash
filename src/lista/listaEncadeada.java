@@ -1,13 +1,16 @@
 package lista;
+import tabela.registro;
 
 public class listaEncadeada {
+    //eu tive que refatora altas coisas nisso mlhr nem usa essas funções se quiser a funcionalidade deles mlhr reescrever o codigo
+
     private node Lista;
     public listaEncadeada(){
         this.Lista = null;
     }
 
     //Inserindo elementos
-    public void inserir (int informacao){
+    public void inserir (registro informacao){
         //Declarando nosso novo nó
         node no = new node();
         no.setInformacao(informacao);
@@ -41,18 +44,18 @@ public class listaEncadeada {
 
 
     // move toda a lista pra frente SEM perder a info do primeiro anterior oia só o cara sabe
-    public void inserePrimeiro(int informacao){
+    public void inserePrimeiro(registro registro){
         node novoPrimeiro = new node();
 
-        novoPrimeiro.setInformacao(informacao);
+        novoPrimeiro.setInformacao(registro);
 
         novoPrimeiro.setProximo(Lista);
 
         Lista=novoPrimeiro;
     }
-    public void insereDepois(node node, int informacao){ //lista.node é o ponto 0
+    public void insereDepois(node node, registro registro){ //lista.node é o ponto 0
         node novoDepois = new node();
-        novoDepois.setInformacao(informacao);
+        novoDepois.setInformacao(registro);
         //PREGYUÇA
         novoDepois.setProximo(node.getProximo());
         node.setProximo(novoDepois);
@@ -61,10 +64,10 @@ public class listaEncadeada {
 
     }
 
-    public void insereUltimo(int informacao){
+    public void insereUltimo(registro registro){
         node novoUltimo = new node();
         node atual=Lista;
-        novoUltimo.setInformacao(informacao);
+        novoUltimo.setInformacao(registro);
         //prvlvmente era mlhr coloca essa parte em uma função
         while (atual.getProximo() != null) {
             atual= atual.getProximo();
@@ -74,7 +77,7 @@ public class listaEncadeada {
 
     }
 
-    public void insereOrdenado(int informacao){
+    public void insereOrdenado(registro informacao){
         //essa ficou muito feia
         node noOrdenado = new node();
         noOrdenado.setInformacao(informacao);
@@ -85,8 +88,8 @@ public class listaEncadeada {
         int indiceDoMaior= 0;
         int ind = 0;
         while (atual.getProximo() != null) {
-            if (atual.getInformacao() > maior) {
-                maior = atual.getInformacao();
+            if (atual.getInformacao().getCodigoNumerico() > maior) {
+                maior = atual.getInformacao().getCodigoNumerico();
                 indiceDoMaior = ind;
             }
             atual= atual.getProximo();
