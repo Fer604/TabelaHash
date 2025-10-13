@@ -155,4 +155,18 @@ public class listaEncadeada {
         return atual;
 
     }
+    public boolean contem(registro registro){
+        int valor = registro.getCodigoNumerico();
+        node atual = Lista;
+        if (atual == null){
+            return false;//gambiarra na cara dura
+        }
+        while (atual.getProximo() != null) {
+            if (atual.getInformacao().getCodigoNumerico() == valor) {
+                return true;
+            }
+            atual= atual.getProximo();
+        }
+        return false;
+    }
 }
