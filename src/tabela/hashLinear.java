@@ -1,37 +1,56 @@
 package tabela;
 
-import lista.listaEncadeada;
-
 public class hashLinear implements hashTable {
 
-    private listaEncadeada[] tabela;
+    private registro[] tabela;
     private int colisoes;
     private int elementos;
 
 
     public hashLinear(int tamanho){
-        tabela = new listaEncadeada[tamanho];
-        for (int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
+        tabela = new registro[tamanho];
         colisoes = 0;
         elementos = 0;
     }
 
-    private int hash(int chave, int tamanho){
-        return chave % tamanho;
+    private int hash(int chave, int tentativa){
+        return (chave+tentativa) % tabela.length;
     }
     @Override
     public void inserir(registro r) {
-        int indice = hash(r.getCodigoNumerico(), tabela.length);
-        if (!tabela[indice].vazia()) colisoes++;
-        tabela[indice].inserir(r);
-        elementos++;
+        int tentativa = 0;
+        int indice;
+        while(tentativa < tabela.length){
+            indice = hash(r.getCodigoNumerico(), tentativa);
+            if(tabela[indice] == null){
+                tabela[indice] = r;
+                return;
+            }
+            else{
+                tentativa++;
+                colisoes++;
+            }
+        }
     }
 
     @Override
     public boolean buscar(registro r) {
-        int indice = hash(r.getCodigoNumerico(), tabela.length);
-        return tabela[indice].contem(r);
+        int tentativa = 0;
+        int indice;
+
+        while (tentativa < tabela.length) {
+            indice = hash(r.getCodigoNumerico(), tentativa);
+
+            if (tabela[indice] == null)
+                return false; // parou em espaço vazio
+            if (tabela[indice].getCodigoNumerico() == r.getCodigoNumerico())
+                return true;
+
+            tentativa++;
+        }
+        return false;
     }
+
 
     @Override
     public int getColisoes() {
@@ -54,7 +73,7 @@ public class hashLinear implements hashTable {
 
     @Override
     public void limpar(){
-        for (int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
+        for (int i = 0; i < tabela.length; i++){tabela[i] = null;}
         colisoes = 0;
         elementos = 0;
     }
