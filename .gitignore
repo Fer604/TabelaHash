@@ -26,7 +26,7 @@ bin/
 .vscode/
 
 ### Compiled class files ###
-Main.class
+*.class
 
 ### Mac OS ###
 .DS_Store

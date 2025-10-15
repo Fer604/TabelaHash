@@ -6,9 +6,5 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
-
-# VS Code files
-*.vscode
-
 # Compiled class files
-Main.class
+*.class
