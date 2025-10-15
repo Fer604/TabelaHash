@@ -1,78 +1,52 @@
-class Node {
-    int codigo;
-    Node prox;
+package tabela;
 
-    Node(int codigo) {
-        this.codigo = codigo;
-        this.prox = null;
+import lista.listaEncadeada;//
+
+public class hashEncadeamento implements hashTable{
+    private listaEncadeada[] tabela;
+    private int colisoes;
+
+    public hashEncadeamento(int tamanho){
+        tabela = new listaEncadeada[tamanho];
+        colisoes = 0;
+        for(int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
     }
-}
-
-public class HashEncadeamento {
-    private Node[] tabela;
-    private int tamanho;
-    private long colisoes;
-
-    public HashEncadeamento(int tamanho) {
-        this.tamanho = tamanho;
-        this.tabela = new Node[tamanho];
-        this.colisoes = 0;
-    }
-
-    private int funcaoHash(int codigo) {
-        if (codigo < 0) codigo = -codigo;
-        return codigo % tamanho;
-    }
-
- 
-    public void inserir(int codigo) {
-        int indice = funcaoHash(codigo);
-        Node novo = new Node(codigo);
-
-        if (tabela[indice] == null) {
-            tabela[indice] = novo;
-        } else {
-            colisoes++;
-            novo.prox = tabela[indice];
-            tabela[indice] = novo;
-        }
-    }
-
-
-    public boolean buscar(int codigo) {
-        int indice = funcaoHash(codigo);
-        Node atual = tabela[indice];
-
-        while (atual != null) {
-            if (atual.codigo == codigo) return true;
-            atual = atual.prox;
-        }
-        return false;
-    }
-
-
-    public boolean remover(int codigo) {
-        int indice = funcaoHash(codigo);
-        Node atual = tabela[indice];
-        Node anterior = null;
-
-        while (atual != null) {
-            if (atual.codigo == codigo) {
-                if (anterior == null) tabela[indice] = atual.prox;
-                else anterior.prox = atual.prox;
-                return true;
-            }
-            anterior = atual;
-            atual = atual.prox;
-        }
-        return false;
-    }
-
-    public long getColisoes() {
-        return colisoes; 
+    public int hash(int chave){
+        return (chave) % tabela.length;
     }
     
-    public int getTamanho() {
-        return tamanho;
+    @Override
+    public void inserir(registro registro){
+        int indice = hash(registro.getCodigoNumerico());
+        tabela[indice].inserir(registro);//esse inserir() é da lista encadeada
+    }
+    @Override
+    public boolean buscar(registro r) {
+        //a implementar
+        return false;
+    }
+
+
+    @Override
+    public int getColisoes() {
+        return colisoes;
+    }
+    @Override
+    public  int getTamanho() {
+        return tabela.length;
+    }
+
+    @Override
+    public  int getElementos() {
+        return 0;
+    }
+
+    @Override
+    public double getFatorCarga(){
+        return 0;
+    }
+
+    @Override
+    public void limpar(){
     }
 }
