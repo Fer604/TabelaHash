@@ -5,6 +5,7 @@ import lista.listaEncadeada;//
 public class hashEncadeamento implements hashTable{
     private listaEncadeada[] tabela;
     private int colisoes;
+    private int elementos;
 
     public hashEncadeamento(int tamanho){
         tabela = new listaEncadeada[tamanho];
@@ -18,12 +19,14 @@ public class hashEncadeamento implements hashTable{
     @Override
     public void inserir(registro registro){
         int indice = hash(registro.getCodigoNumerico());
-        tabela[indice].inserir(registro);//esse inserir() é da lista encadeada
+        if (!tabela[indice].vazia()) colisoes++;//tinha que conta as colisões
+        tabela[indice].inserir(registro);
+        elementos++;
     }
     @Override
     public boolean buscar(registro r) {
-        //a implementar
-        return false;
+        int indice = hash(r.getCodigoNumerico());
+        return tabela[indice].contem(r);
     }
 
 
@@ -38,15 +41,18 @@ public class hashEncadeamento implements hashTable{
 
     @Override
     public  int getElementos() {
-        return 0;
+        return elementos;
     }
 
     @Override
     public double getFatorCarga(){
-        return 0;
+        return (double) elementos /tabela.length;
     }
 
     @Override
     public void limpar(){
+        for (int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
+        colisoes = 0;
+        elementos = 0;
     }
 }

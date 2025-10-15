@@ -31,6 +31,7 @@ public class hashLinear implements hashTable {
                 colisoes++;
             }
         }
+        elementos++;
     }
 
     @Override
