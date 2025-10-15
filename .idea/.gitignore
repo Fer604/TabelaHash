@@ -9,3 +9,6 @@
 
 # VS Code files
 *.vscode
+
+# Compiled class files
+Main.class
