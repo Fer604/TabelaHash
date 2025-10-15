@@ -1,6 +1,6 @@
 import tabela.*;
 import java.util.Random;
-public class Main {
+public class antigo_main {
     public static void main(String[] args) {
         // teste
         hashLinear tabelaLinear = new hashLinear(20);
