@@ -16,5 +16,7 @@ public class Main {
         System.out.println(tabelaLinear.buscar(a));  // deve ser true
         System.out.println(tabelaLinear.buscar(new registro("99")));  // deve ser false
 
+        //criar o objeto gerador de dados, com uma seed e inseri-los em todos os tipos de tabela (LINEAR/DUPLO/ENCADEAMENTO) e medir a perfomance de cada tabela e suas funções
+
     }
 }

@@ -73,12 +73,13 @@ public class hashDuplo implements hashTable{
 
     @Override
     public double getFatorCarga() {
+        //a implementar
         return 0;
     }
 
     @Override
     public void limpar() {
-
+        //a implementar
     }
 
 }
