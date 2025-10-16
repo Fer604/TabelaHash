@@ -1,88 +1,64 @@
-import tabela.*;
 import java.util.Random;
+import java.util.Scanner;
+
+import tabela.*;
 
 public class Main {
-    // multiplicative hash (Knuth) for integer keys
-//    public static int multiplicativeHash(int key, int tableSize){
-//        // use unsigned multiplication behavior via long
-//        final long A = 2654435769L; // Knuth's multiplicative constant (32-bit)
-//        long unsignedKey = Integer.toUnsignedLong(key);
-//        long hashed = (unsignedKey * A) & 0xFFFFFFFFL;
-//        return (int)((hashed >>> (32 - Integer.numberOfTrailingZeros(tableSize))) % tableSize);
-//    }
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        int[] tamanhosTabela = {1000, 10000, 100000};
+        int[] tamanhosDados = {100000, 1000000, 10000000};
 
-    public static void main(String[] args){
-        long seed = 12345L;
-        int n1 = 100000; // number of registros to generate
-        int n2 = 1000000;
-        int n3 = 10000000;
-        tabela.geradorDados gen = new tabela.geradorDados(seed);
-        registro[] dadosP = gen.gerar(n1);
-        registro[] dadosM = gen.gerar(n2);
-        registro[] dadosG = gen.gerar(n3);
+        System.out.println("=== Teste de Tabelas Hash ===");
+        System.out.println("Escolha a função hash para testar:");
+        System.out.println("1 - Hash Linear");
+        System.out.println("2 - Hash Duplo");
+        System.out.println("3 - Hash Multiplicação");
+        System.out.print("Opção: ");
+        int opcao = input.nextInt();
 
-        testeLinear(dadosP);
-        testeLinear(dadosM);
-        testeLinear(dadosG);
+        String nomeMetodo = "";
+        hashTable tabela = null;
 
+        for (int tamanhoTabela : tamanhosTabela) {
+            for (int tamanhoDados : tamanhosDados) {
+                System.out.println("\n=== Testando tabela de tamanho " + tamanhoTabela + " com " + tamanhoDados + " registros ===");
 
-        // print a few sample hashes for visibility
-//        System.out.println("Sample multiplicative hashes:");
-//        for (int i = 0; i < 5; i++){
-//            int codigo = dados[i].getCodigoNumerico();
-//            int h = multiplicativeHash(codigo, 4096);
-//            System.out.println(dados[i].getCodigo() + " -> " + h);
-//        }
+                // Cria a tabela conforme a escolha do usuário
+                switch (opcao) {
+                    case 1:
+                        tabela = new hashLinear(tamanhoTabela);
+                        nomeMetodo = "Hash Linear";
+                        break;
+                    case 2:
+                        tabela = new hashDuplo(tamanhoTabela);
+                        nomeMetodo = "Hash Duplo";
+                        break;
+                    case 3:
+                        tabela = new hashEncadeamento(tamanhoTabela);
+                        nomeMetodo = "Hash Encadeamento";
+                        break;
+                    default:
+                        System.out.println("Opção inválida!");
+                        input.close();
+                        return;
+                }
 
-        // create tables
-//        hashLinear linear = new hashLinear(n);
-//        hashDuplo duplo = new hashDuplo(n);
-//        hashEncadeamento enc = new hashEncadeamento(n);
-//
-//        long t1 = gen.inserirTodos(linear, dados);
-//        System.out.println("Linear: time=" + t1 + "ms, colisoes=" + linear.getColisoes() + ", elementos=" + linear.getElementos());
-//
-//        long t2 = gen.inserirTodos(duplo, dados);
-//        System.out.println("Duplo: time=" + t2 + "ms, colisoes=" + duplo.getColisoes() + ", elementos=" + duplo.getElementos());
-//
-//        long t3 = gen.inserirTodos(enc, dados);
-//        System.out.println("Encadeamento: time=" + t3 + "ms, colisoes=" + enc.getColisoes() + ", elementos=" + enc.getElementos());
-    }
-    public static void testeLinear(registro[] dados){
-        hashTable linearP = new hashLinear(1000);
-        hashTable linearM = new hashLinear(10000);
-        hashTable linearG = new hashLinear(100000);
-
-        for  (int i = 0; i < dados.length; i++){
-            linearP.inserir(dados[i]);
-            linearM.inserir(dados[i]);
-            linearG.inserir(dados[i]);
-
+                testarTabela(tabela, tamanhoDados, nomeMetodo);
+            }
         }
-
     }
-    public void testeEncadeamento(registro[] dados){
-        hashTable encadeadaP = new hashEncadeamento(1000);
-        hashTable encadeadaM = new hashEncadeamento(10000);
-        hashTable encadeadaG = new hashEncadeamento(100000);
 
-        for  (int i = 0; i < dados.length; i++){
-            encadeadaP.inserir(dados[i]);
-            encadeadaM.inserir(dados[i]);
-            encadeadaG.inserir(dados[i]);
-        }
+    private static void testarTabela(hashTable tabela, int tamanhoDados, String nomeMetodo) {
+        long seed = 123;
+        geradorDados gerador = new geradorDados(seed);
+        long inicio = System.currentTimeMillis();
 
-    }
-    public void testeDuplo(registro[] dados){
-        hashTable duplaP = new hashDuplo(1000);
-        hashTable duplaM = new hashDuplo(10000);
-        hashTable duplaG = new hashDuplo(100000);
+        registro[] dados  = gerador.gerar(tamanhoDados);
+        gerador.inserirTodos(tabela,dados);
 
-        for  (int i = 0; i < dados.length; i++){
-            duplaP.inserir(dados[i]);
-            duplaM.inserir(dados[i]);
-            duplaG.inserir(dados[i]);
-        }
 
+        long fim = System.currentTimeMillis();
+        System.out.println(nomeMetodo + " - Tempo: " + (fim - inicio) + " ms");
     }
 }
