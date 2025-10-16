@@ -1,36 +1,45 @@
 package tabela;
 
-public class hashDuplo implements hashTable{
+public class hashDuplo implements hashTable {
     private registro[] tabela;
     private int colisoes;
     private int elementos;
 
-    public hashDuplo(int tamanho){
+    public hashDuplo(int tamanho) {
         tabela = new registro[tamanho];
+        colisoes = 0;
+        elementos = 0;
     }
+
+    // Primeira função hash (resto da divisão)
+    private int hash1(int chave) {
+        return Math.abs(chave) % tabela.length;
+    }
+
+    // Segunda função hash (deve ser coprima com o tamanho)
     private int hash2(int chave) {
-        // Segunda função hash — deve ser coprima de tamanho
-        return 1 + (Math.abs(chave) % (tabela.length - 1));
-    }
-
-
-    protected int hash(int chave, int tentativa) {
-        return (Math.abs(chave) + tentativa * hash2(chave)) % tabela.length;
+        int h = 1 + (Math.abs(chave) % (tabela.length - 1));
+        if(h==0){
+            return 1;
+        }
+        return h; // garante que nunca será 0
     }
 
     @Override
     public void inserir(registro r) {
+        int chave = r.getCodigoNumerico();
         int tentativa = 0;
         int indice;
 
-        while(tentativa < tabela.length){
-            indice = hash(hash2(tentativa), tentativa);
-            if(tabela[indice] == null){
+        while (tentativa < tabela.length) {
+            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);
+
+
+            if (tabela[indice] == null) {
                 tabela[indice] = r;
                 elementos++;
                 return;
-            }
-            else{
+            } else {
                 colisoes++;
                 tentativa++;
             }
@@ -39,17 +48,20 @@ public class hashDuplo implements hashTable{
 
     @Override
     public boolean buscar(registro r) {
+        int chave = r.getCodigoNumerico();
         int tentativa = 0;
         int indice;
 
-        while(tentativa < tabela.length){
-            indice = hash(hash2(r.getCodigoNumerico()), tentativa);
-            if(tabela[indice].getCodigoNumerico() == r.getCodigoNumerico()){
-                return true;
-            }
-            if(tabela[indice] == null){
+        while (tentativa < tabela.length) {
+            indice = (hash1(chave) + tentativa * hash2(chave)) % tabela.length;
+
+            if (tabela[indice] == null) {
                 return false;
             }
+            if (tabela[indice].getCodigoNumerico() == chave) {
+                return true;
+            }
+
             tentativa++;
         }
         return false;
@@ -80,9 +92,7 @@ public class hashDuplo implements hashTable{
         for (int i = 0; i < tabela.length; i++) {
             tabela[i] = null;
         }
-        elementos = 0;
         colisoes = 0;
+        elementos = 0;
     }
-
-
 }
