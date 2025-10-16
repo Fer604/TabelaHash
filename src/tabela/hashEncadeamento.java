@@ -13,9 +13,10 @@ public class hashEncadeamento implements hashTable{
         for(int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
     }
     public int hash(int chave){
-        return (chave) % tabela.length;
+        return Math.abs(chave) % tabela.length;
     }
-    
+
+
     @Override
     public void inserir(registro registro){
         int indice = hash(registro.getCodigoNumerico());

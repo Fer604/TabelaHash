@@ -13,52 +13,47 @@ public class Main {
         System.out.println("Escolha a função hash para testar:");
         System.out.println("1 - Hash Linear");
         System.out.println("2 - Hash Duplo");
-        System.out.println("3 - Hash Multiplicação");
+        System.out.println("3 - Hash Encadeado");
         System.out.print("Opção: ");
         int opcao = input.nextInt();
 
-        String nomeMetodo = "";
-        hashTable tabela = null;
+        int[][] combinacoes = {
+                {0, 0}, // tabela 1000 x dados 100_000
+                {1, 1}, // tabela 10000 x dados 1_000_000
+                {2, 2}  // tabela 100000 x dados 10_000_000
+        };
 
-        for (int tamanhoTabela : tamanhosTabela) {
-            for (int tamanhoDados : tamanhosDados) {
-                System.out.println("\n=== Testando tabela de tamanho " + tamanhoTabela + " com " + tamanhoDados + " registros ===");
+        for (int[] combo : combinacoes) {
+            int tamanhoTabela = tamanhosTabela[combo[0]];
+            int tamanhoDados = tamanhosDados[combo[1]];
 
-                // Cria a tabela conforme a escolha do usuário
-                switch (opcao) {
-                    case 1:
-                        tabela = new hashLinear(tamanhoTabela);
-                        nomeMetodo = "Hash Linear";
-                        break;
-                    case 2:
-                        tabela = new hashDuplo(tamanhoTabela);
-                        nomeMetodo = "Hash Duplo";
-                        break;
-                    case 3:
-                        tabela = new hashEncadeamento(tamanhoTabela);
-                        nomeMetodo = "Hash Encadeamento";
-                        break;
-                    default:
-                        System.out.println("Opção inválida!");
-                        input.close();
-                        return;
+            hashTable tabela = null;
+            String nomeMetodo = "";
+
+            switch (opcao) {
+                case 1 -> {
+                    tabela = new hashLinear(tamanhoTabela);
+                    nomeMetodo = "Hash Linear";
                 }
-
-                testarTabela(tabela, tamanhoDados, nomeMetodo);
+                case 2 -> {
+                    tabela = new hashDuplo(tamanhoTabela);
+                    nomeMetodo = "Hash Duplo";
+                }
+                case 3 -> {
+                    tabela = new hashEncadeamento(tamanhoTabela);
+                    nomeMetodo = "Hash Encadeamento";
+                }
+                default -> {
+                    System.out.println("Opção inválida!");
+                    input.close();
+                    return;
+                }
             }
+
+            System.out.println("\n=== Testando " + nomeMetodo + " ===");
+            testeDesempenho.executar(tabela, tamanhoTabela, new int[]{tamanhoDados}, nomeMetodo);
         }
-    }
 
-    private static void testarTabela(hashTable tabela, int tamanhoDados, String nomeMetodo) {
-        long seed = 123;
-        geradorDados gerador = new geradorDados(seed);
-        long inicio = System.currentTimeMillis();
-
-        registro[] dados  = gerador.gerar(tamanhoDados);
-        gerador.inserirTodos(tabela,dados);
-
-
-        long fim = System.currentTimeMillis();
-        System.out.println(nomeMetodo + " - Tempo: " + (fim - inicio) + " ms");
+        input.close();
     }
 }

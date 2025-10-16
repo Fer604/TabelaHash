@@ -24,7 +24,7 @@ public class listaEncadeada {
                 atual = atual.getProximo();
             }
             atual.setProximo(no);
-            System.out.println("Nó atual no endereço" + atual);
+//            System.out.println("Nó atual no endereço" + atual);
         }
     }
     //Imprimindo elementos

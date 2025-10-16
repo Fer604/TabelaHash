@@ -24,6 +24,7 @@ public class hashLinear implements hashTable {
             indice = hash(r.getCodigoNumerico(), tentativa);
             if(tabela[indice] == null){
                 tabela[indice] = r;
+                elementos++;
                 return;
             }
             else{
@@ -31,7 +32,6 @@ public class hashLinear implements hashTable {
                 colisoes++;
             }
         }
-        elementos++;
     }
 
     @Override

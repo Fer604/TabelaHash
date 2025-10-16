@@ -15,7 +15,6 @@ public class hashDuplo implements hashTable{
 
 
     protected int hash(int chave, int tentativa) {
-        // hash duplo: usa duas funções hash diferentes
         return (Math.abs(chave) + tentativa * hash2(chave)) % tabela.length;
     }
 
@@ -28,6 +27,7 @@ public class hashDuplo implements hashTable{
             indice = hash(hash2(tentativa), tentativa);
             if(tabela[indice] == null){
                 tabela[indice] = r;
+                elementos++;
                 return;
             }
             else{
@@ -35,7 +35,6 @@ public class hashDuplo implements hashTable{
                 tentativa++;
             }
         }
-        elementos++;
     }
 
     @Override
@@ -44,7 +43,7 @@ public class hashDuplo implements hashTable{
         int indice;
 
         while(tentativa < tabela.length){
-            indice = hash(hash2(tentativa), tentativa);
+            indice = hash(hash2(r.getCodigoNumerico()), tentativa);
             if(tabela[indice].getCodigoNumerico() == r.getCodigoNumerico()){
                 return true;
             }
@@ -73,13 +72,17 @@ public class hashDuplo implements hashTable{
 
     @Override
     public double getFatorCarga() {
-        //a implementar
-        return 0;
+        return (double) elementos / tabela.length;
     }
 
     @Override
     public void limpar() {
-        //a implementar
+        for (int i = 0; i < tabela.length; i++) {
+            tabela[i] = null;
+        }
+        elementos = 0;
+        colisoes = 0;
     }
+
 
 }
