@@ -56,4 +56,24 @@ public class hashEncadeamento implements hashTable{
         colisoes = 0;
         elementos = 0;
     }
+    public int[] maioresListas() {
+        int[] maiores = new int[3];
+        for (var lista : tabela) {
+            if (lista != null) {
+                int tam = lista.tamanho();
+                if (tam > maiores[0]) {
+                    maiores[2] = maiores[1];
+                    maiores[1] = maiores[0];
+                    maiores[0] = tam;
+                } else if (tam > maiores[1]) {
+                    maiores[2] = maiores[1];
+                    maiores[1] = tam;
+                } else if (tam > maiores[2]) {
+                    maiores[2] = tam;
+                }
+            }
+        }
+        return maiores;
+    }
+
 }

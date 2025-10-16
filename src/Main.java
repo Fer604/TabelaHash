@@ -6,8 +6,8 @@ import tabela.*;
 public class Main {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        int[] tamanhosTabela = {1000, 10000, 100000};
-        int[] tamanhosDados = {100000, 1000000, 10000000};
+        int[] tamanhosTabela = {100_000, 1_000_000, 10_000_000};
+        int[] tamanhosDados = {100_000, 1_000_000, 10_000_000};
 
         System.out.println("=== Teste de Tabelas Hash ===");
         System.out.println("Escolha a função hash para testar:");
@@ -18,9 +18,11 @@ public class Main {
         int opcao = input.nextInt();
 
         int[][] combinacoes = {
-                {0, 0}, // tabela 1000 x dados 100_000
-                {1, 1}, // tabela 10000 x dados 1_000_000
-                {2, 2}  // tabela 100000 x dados 10_000_000
+                {0, 0}, // tabela 100k x dados 100k  -> fator ≈ 1
+                {1, 0}, // tabela 1M x dados 100k   -> fator ≈ 0.1
+                {1, 1}, // tabela 1M x dados 1M     -> fator ≈ 1
+                {2, 1}, // tabela 10M x dados 1M    -> fator ≈ 0.1
+                {2, 2}  // tabela 10M x dados 10M   -> fator ≈ 1
         };
 
         for (int[] combo : combinacoes) {

@@ -1,0 +1,17 @@
+| Tabela Hash           | Tamanho Tabela | Tamanho Dados | Tempo de Inserção (ms) |  Colisões  | Fator de Carga | Tempo de Busca (ms) | 3 Maiores Listas (Tamanhos) | Menor Gap | Maior Gap | Gap Médio |
+| --------------------- | -------------- | ------------- | ---------------------- | ---------- | -------------- | ------------------- | --------------------------- | --------- | --------- | --------- |
+| Linear (resto)        | 100.000        | 100.000       | 196ms                  | 17947209   | 1              | 1035ms              | N/A                         | 1         | 1         | 1         |
+| Linear (resto)        | 1.000.000      | 100.000       | 5ms                    | 5684       | 0.1            | 9ms                 | N/A                         | 1         | 114       | 10        |
+| Linear (resto)        | 1.000.000      | 1.000.000     | 9801 ms                | 730425103  | 1              | 135753 ms           | N/A                         | 1         | 1         | 1         |
+| Linear (resto)        | 10.000.000     | 1.000.000     | 181 ms                 | 55737      | 0.1            | 252 ms              | N/A                         | 1         | 145       | 10        |
+| Linear (resto)        | 10.000.000     | 10.000.000    |                        |            |                |                     | N/A                         |           |           |           |
+| Duplo (hash duplo)    | 100.000        | 100.000       |                        |            |                |                     | N/A                         |           |           |           |
+| Duplo (hash duplo)    | 1.000.000      | 100.000       |                        |            |                |                     | N/A                         |           |           |           |
+| Duplo (hash duplo)    | 1.000.000      | 1.000.000     |                        |            |                |                     | N/A                         |           |           |           |
+| Duplo (hash duplo)    | 10.000.000     | 1.000.000     |                        |            |                |                     | N/A                         |           |           |           |
+| Duplo (hash duplo)    | 10.000.000     | 10.000.000    |                        |            |                |                     |                             |           |           |           |
+| Encadeamento          | 100.000        | 100.000       |                        |            |                |                     |                             |           |           |           |
+| Encadeamento          | 1.000.000      | 100.000       |                        |            |                |                     |                             |           |           |           |
+| Encadeamento          | 1.000.000      | 1.000.000     |                        |            |                |                     |                             |           |           |           |
+| Encadeamento          | 10.000.000     | 1.000.000     |                        |            |                |                     |                             |           |           |           |
+| Encadeamento          | 10.000.000     | 10.000.000    |                        |            |                |                     |                             |           |           |           |

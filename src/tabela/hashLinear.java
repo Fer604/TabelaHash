@@ -78,6 +78,30 @@ public class hashLinear implements hashTable {
         colisoes = 0;
         elementos = 0;
     }
+    public double[] calcularGaps() {
+        int anterior = -1;
+        int menor = Integer.MAX_VALUE;
+        int maior = 0;
+        int soma = 0;
+        int qtd = 0;
+
+        for (int i = 0; i < tabela.length; i++) {
+            if (tabela[i] != null) {
+                if (anterior != -1) {
+                    int gap = i - anterior;
+                    soma += gap;
+                    menor = Math.min(menor, gap);
+                    maior = Math.max(maior, gap);
+                    qtd++;
+                }
+                anterior = i;
+            }
+        }
+
+        double media = (qtd > 0) ? (double) soma / qtd : 0;
+        return new double[]{menor, maior, media};
+    }
+
 
 }
 

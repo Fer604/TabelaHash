@@ -169,4 +169,17 @@ public class listaEncadeada {
         }
         return false;
     }
+    public int tamanho(){
+        node atual=Lista;
+        int tamanho=0;
+        //prvlvmente era mlhr coloca essa parte em uma função
+        if (atual ==null){
+            return tamanho;
+        }
+        while (atual.getProximo() != null) {
+            tamanho++;
+            atual= atual.getProximo();
+        }
+        return tamanho;
+    }
 }
