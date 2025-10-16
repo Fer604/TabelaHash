@@ -25,6 +25,12 @@ public class testeDesempenho {
                 System.out.printf("  Gaps -> Menor: %.0f | Maior: %.0f | Média: %.2f%n",
                         gaps[0], gaps[1], gaps[2]);
             }
+            //gaps duplo
+            if(tabela instanceof hashDuplo duplo) {
+                double[] gaps = duplo.calcularGaps();
+                System.out.printf("  Gaps -> Menor: %.0f | Maior: %.0f | Média: %.2f%n",
+                        gaps[0], gaps[1], gaps[2]);
+            }
             tabela.limpar(); // limpa antes do próximo teste
         }
     }
