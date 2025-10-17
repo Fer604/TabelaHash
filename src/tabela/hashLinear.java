@@ -98,7 +98,13 @@ public class hashLinear implements hashTable {
             }
         }
 
-        double media = (qtd > 0) ? (double) soma / qtd : 0;
+        double media;
+        if (qtd > 0) {
+            media = (double) soma / qtd;
+        } else {
+            media = 0;
+        }
+
         return new double[]{menor, maior, media};
     }
 

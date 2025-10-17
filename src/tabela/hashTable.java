@@ -11,7 +11,7 @@ public interface hashTable {
 
     int getTamanho();
 
-    int getElementos(); //qtd total de elementos aramazenados
+    int getElementos(); //qtd total de elementos aramazenados(acaboou não sendo utilizado)
 
     double getFatorCarga();//retorna o fator de carga (load factor = elementos / tamanho da tabela).
 

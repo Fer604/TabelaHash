@@ -32,7 +32,7 @@ public class hashDuplo implements hashTable {
         int indice;
 
         while (tentativa < tabela.length) {
-            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);
+            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);//utiliza função hash da mesma forma em inserir e buscar
 
             if (tabela[indice] == null) {
                 tabela[indice] = r;
@@ -52,7 +52,7 @@ public class hashDuplo implements hashTable {
         int indice;
 
         while (tentativa < tabela.length) {
-            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);
+            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);//utiliza função hash da mesma forma em inserir e buscar
 
 
             if (tabela[indice] == null) {
@@ -115,7 +115,13 @@ public class hashDuplo implements hashTable {
             }
         }
 
-        double media = (qtd > 0) ? (double) soma / qtd : 0;
+        double media;
+        if (qtd > 0) {
+            media = (double) soma / qtd;
+        } else {
+            media = 0;
+        }
+
         return new double[]{menor, maior, media};
     }
 }

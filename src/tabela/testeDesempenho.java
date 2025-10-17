@@ -1,6 +1,7 @@
 package tabela;
 
 public class testeDesempenho {
+    //testa uma tabela de cada vez com as diferentes permutações de inserções e tamanhos da tabela
     public static void executar(hashTable tabela,int tamanhoTabela, int[] tamanhosDados, String nomeMetodo) {
         long seed = 123;
         geradorDados gerador = new geradorDados(seed);
@@ -9,7 +10,7 @@ public class testeDesempenho {
             registro[] dados = gerador.gerar(tamanhoDados);
             long tempo = gerador.inserirTodos(tabela, dados);
             long inicioBusca = System.currentTimeMillis();
-            for (registro r : dados) tabela.buscar(r);
+            for (registro r : dados) tabela.buscar(r);//teste que busca todos os registros que foram adicionados
             long tempoBusca = System.currentTimeMillis() - inicioBusca;
             System.out.printf(
                     "Tabela %s de tamanho %d (%d dados) -> Tempo: %d ms | Colisões: %d | Fator: %.3f%n | Tempo de Busca: %d ms" ,

@@ -2,6 +2,7 @@ import tabela.*;
 import java.util.Random;
 public class antigo_main {
     public static void main(String[] args) {
+        //main antigo somente para propositos de testar funções individuais
         // teste
         hashLinear tabelaLinear = new hashLinear(20);
 

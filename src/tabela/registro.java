@@ -1,7 +1,8 @@
 package tabela;
 
 public class registro {
-    private final String codigo;
+    //objeto principal a ser armazenado nas tabelas
+    private final String codigo;//só possui um codigo em string
 
     public registro(String codigo) {
         this.codigo = codigo;
