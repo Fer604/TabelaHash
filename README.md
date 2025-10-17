@@ -89,48 +89,9 @@ Além disso, foram coletadas métricas adicionais, como:
 - Em cenários reais, **α ≤ 0.75** é recomendado para sondagem linear e hash duplo.  
 - A **distribuição dos gaps** reflete diretamente a dispersão e eficiência da função hash.
 
----
-
-##  5. Estrutura dos Arquivos
-
-TabelaHash/
-├── codigoAutoria/                 # Versão não comentada, usada para comprovação de autoria
-│   └── src/
-│       ├── lista/
-│       │   ├── listaEncadeada.java
-│       │   └── node.java
-│       └── tabela/
-│           ├── antigo_main.java
-│           └── Main.java
-│
-├── figs/                          # Diretório para armazenar os gráficos gerados
-├── out/                           # Saída de compilação (gerado automaticamente)
-│
-├── src/
-│   ├── lista/
-│   │   ├── listaEncadeada.java
-│   │   └── node.java
-│   └── tabela/
-│       ├── geradorDados.java
-│       ├── hashDuplo.java
-│       ├── hashEncadeamento.java
-│       ├── hashLinear.java
-│       ├── hashTable.java
-│       ├── registro.java
-│       └── testeDesempenho.java
-│   ├── antigo_main.java
-│   └── Main.java
-│
-├── image.png                     
-├── tabela.csv                     # Resultados de desempenho em formato tabular
-├── README.md                      # Relatório final com gráficos embutidos
-├── .gitignore
-└── TabelaHash.iml                 # Arquivo de projeto IntelliJ
 
 
----
-
-##  6. Ferramentas Utilizadas
+##  5. Ferramentas Utilizadas
 
 - **Java** – Implementação das tabelas hash  
 - **Python (Pandas + Matplotlib)** – Análise e geração dos gráficos  
