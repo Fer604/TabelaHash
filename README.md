@@ -1,7 +1,6 @@
 #  Análise de Desempenho – Tabelas Hash  
 **Autores:** Fernando Aschwanden, André Esteves, Gustavo Jansen  
-**Disciplina:** Estruturas de Dados  
-**Item 5 – Inserção, Busca e Gaps nas Estruturas Hash**
+**Disciplina:** Resolução de Problemas Estruturados em Computação
 
 ---
 
@@ -9,7 +8,7 @@
 
 O objetivo deste experimento foi **medir o tempo de busca de elementos** em diferentes implementações de **tabelas hash**:
 
-- **Linear (Sondagem Linear)**
+- **Linear **
 - **Duplo Hashing**
 - **Encadeamento Separado**
 
