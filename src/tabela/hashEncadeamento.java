@@ -6,14 +6,17 @@ public class hashEncadeamento implements hashTable{
     private listaEncadeada[] tabela;
     private int colisoes;
     private int elementos;
+    private int tamanhoTabela;
 
     public hashEncadeamento(int tamanho){
         tabela = new listaEncadeada[tamanho];
         colisoes = 0;
-        for(int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
+        elementos = 0;
+        tamanhoTabela = tamanho;
+        for(int i = 0; i < tamanho; i++){tabela[i] = new listaEncadeada();}
     }
     public int hash(int chave){
-        return Math.abs(chave) % tabela.length;
+        return moduloValor(chave) % tamanhoTabela;
     }
 
 
@@ -37,7 +40,7 @@ public class hashEncadeamento implements hashTable{
     }
     @Override
     public  int getTamanho() {
-        return tabela.length;
+        return tamanhoTabela;
     }
 
     @Override
@@ -47,12 +50,12 @@ public class hashEncadeamento implements hashTable{
 
     @Override
     public double getFatorCarga(){
-        return (double) elementos /tabela.length;
+        return (double) elementos /tamanhoTabela;
     }
 
     @Override
     public void limpar(){
-        for (int i = 0; i < tabela.length; i++){tabela[i] = new listaEncadeada();}
+        for (int i = 0; i < tamanhoTabela; i++){tabela[i] = new listaEncadeada();}
         colisoes = 0;
         elementos = 0;
     }
@@ -75,5 +78,43 @@ public class hashEncadeamento implements hashTable{
         }
         return maiores;
     }
+    public int moduloValor(int valor){
+        if (valor <0){
+            valor = valor* -1;
+        }
+        return valor;
+    }
+    public double[] calcularGaps() {
+        int anterior = -1;
+        int menor = 2147483647; //int limite
+        int maior = 0;
+        int soma = 0;
+        int qtd = 0;
 
+        for (int i = 0; i < tamanhoTabela; i++) {
+            if (tabela[i] != null) {
+                if (anterior != -1) {
+                    int gap = i - anterior;
+                    soma += gap;
+                    if (gap < menor) {
+                        menor = gap;
+                    }
+                    if (gap > maior) {
+                        maior = gap;
+                    }
+                    qtd++;
+                }
+                anterior = i;
+            }
+        }
+
+        double media;
+        if (qtd > 0) {
+            media = (double) soma / qtd;
+        } else {
+            media = 0;
+        }
+
+        return new double[]{menor, maior, media};
+    }
 }

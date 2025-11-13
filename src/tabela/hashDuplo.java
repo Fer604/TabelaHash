@@ -4,21 +4,23 @@ public class hashDuplo implements hashTable {
     private registro[] tabela;
     private int colisoes;
     private int elementos;
+    private int tamanhoTabela;
 
     public hashDuplo(int tamanho) {
         tabela = new registro[tamanho];
         colisoes = 0;
         elementos = 0;
+        tamanhoTabela = tamanho;
     }
 
     // Primeira função hash (resto da divisão)
     private int hash1(int chave) {
-        return Math.abs(chave) % tabela.length;
+        return moduloValor(chave) % tamanhoTabela;
     }
 
     // Segunda função hash (deve ser coprima com o tamanho)
     private int hash2(int chave) {
-        int h = 1 + (Math.abs(chave) % (tabela.length - 1));
+        int h = 1 + (moduloValor(chave) % (tamanhoTabela - 1));
         if(h==0){
             return 1;
         }
@@ -31,8 +33,8 @@ public class hashDuplo implements hashTable {
         int tentativa = 0;
         int indice;
 
-        while (tentativa < tabela.length) {
-            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);//utiliza função hash da mesma forma em inserir e buscar
+        while (tentativa < tamanhoTabela) {
+            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tamanhoTabela);//utiliza função hash da mesma forma em inserir e buscar
 
             if (tabela[indice] == null) {
                 tabela[indice] = r;
@@ -51,8 +53,8 @@ public class hashDuplo implements hashTable {
         int tentativa = 0;
         int indice;
 
-        while (tentativa < tabela.length) {
-            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tabela.length);//utiliza função hash da mesma forma em inserir e buscar
+        while (tentativa < tamanhoTabela) {
+            indice = Math.floorMod(hash1(chave) + tentativa * hash2(chave), tamanhoTabela);//utiliza função hash da mesma forma em inserir e buscar
 
 
             if (tabela[indice] == null) {
@@ -74,7 +76,7 @@ public class hashDuplo implements hashTable {
 
     @Override
     public int getTamanho() {
-        return tabela.length;
+        return tamanhoTabela;
     }
 
     @Override
@@ -84,12 +86,12 @@ public class hashDuplo implements hashTable {
 
     @Override
     public double getFatorCarga() {
-        return (double) elementos / tabela.length;
+        return (double) elementos / tamanhoTabela;
     }
 
     @Override
     public void limpar() {
-        for (int i = 0; i < tabela.length; i++) {
+        for (int i = 0; i < tamanhoTabela; i++) {
             tabela[i] = null;
         }
         colisoes = 0;
@@ -97,18 +99,22 @@ public class hashDuplo implements hashTable {
     }
     public double[] calcularGaps() {
         int anterior = -1;
-        int menor = Integer.MAX_VALUE;
+        int menor = 2147483647;
         int maior = 0;
         int soma = 0;
         int qtd = 0;
 
-        for (int i = 0; i < tabela.length; i++) {
+        for (int i = 0; i < tamanhoTabela; i++) {
             if (tabela[i] != null) {
                 if (anterior != -1) {
                     int gap = i - anterior;
                     soma += gap;
-                    menor = Math.min(menor, gap);
-                    maior = Math.max(maior, gap);
+                    if (gap < menor) {
+                        menor = gap;
+                    }
+                    if (gap > maior) {
+                        maior = gap;
+                    }
                     qtd++;
                 }
                 anterior = i;
@@ -123,5 +129,11 @@ public class hashDuplo implements hashTable {
         }
 
         return new double[]{menor, maior, media};
+    }
+    private int moduloValor(int valor){
+        if (valor <0){
+            valor = valor * -1;
+        }
+        return valor;
     }
 }

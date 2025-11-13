@@ -5,22 +5,23 @@ public class hashLinear implements hashTable {
     private registro[] tabela;
     private int colisoes;
     private int elementos;
-
+    private int tamanhoTabela;
 
     public hashLinear(int tamanho){
         tabela = new registro[tamanho];
         colisoes = 0;
         elementos = 0;
+        tamanhoTabela = tamanho;
     }
 
     private int hash(int chave, int tentativa){
-        return (chave+tentativa) % tabela.length;
+        return (chave+tentativa) % tamanhoTabela;
     }
     @Override
     public void inserir(registro r) {
         int tentativa = 0;
         int indice;
-        while(tentativa < tabela.length){
+        while(tentativa < tamanhoTabela){
             indice = hash(r.getCodigoNumerico(), tentativa);
             if(tabela[indice] == null){
                 tabela[indice] = r;
@@ -39,7 +40,7 @@ public class hashLinear implements hashTable {
         int tentativa = 0;
         int indice;
 
-        while (tentativa < tabela.length) {
+        while (tentativa < tamanhoTabela) {
             indice = hash(r.getCodigoNumerico(), tentativa);
 
             if (tabela[indice] == null)
@@ -59,7 +60,7 @@ public class hashLinear implements hashTable {
     }
     @Override
     public  int getTamanho() {
-        return tabela.length;
+        return tamanhoTabela;
     }
 
     @Override
@@ -69,29 +70,33 @@ public class hashLinear implements hashTable {
 
     @Override
     public double getFatorCarga(){
-        return (double) elementos /tabela.length;
+        return (double) elementos /tamanhoTabela;
     }
 
     @Override
     public void limpar(){
-        for (int i = 0; i < tabela.length; i++){tabela[i] = null;}
+        for (int i = 0; i < tamanhoTabela; i++){tabela[i] = null;}
         colisoes = 0;
         elementos = 0;
     }
     public double[] calcularGaps() {
         int anterior = -1;
-        int menor = Integer.MAX_VALUE;
+        int menor = 2147483647; //int limite
         int maior = 0;
         int soma = 0;
         int qtd = 0;
 
-        for (int i = 0; i < tabela.length; i++) {
+        for (int i = 0; i < tamanhoTabela; i++) {
             if (tabela[i] != null) {
                 if (anterior != -1) {
                     int gap = i - anterior;
                     soma += gap;
-                    menor = Math.min(menor, gap);
-                    maior = Math.max(maior, gap);
+                    if (gap < menor) {
+                        menor = gap;
+                    }
+                    if (gap > maior) {
+                        maior = gap;
+                    }
                     qtd++;
                 }
                 anterior = i;
