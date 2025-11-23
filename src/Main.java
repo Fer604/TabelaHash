@@ -52,7 +52,7 @@ public class Main {
             }
 
             System.out.println("\n=== Testando " + nomeMetodo + " ===");
-            testeDesempenho.executar(tabela, tamanhoTabela, new int[]{tamanhoDados}, nomeMetodo);
+            testeDesempenho.executar(tabela, tabela.getTamanho(), new int[]{tamanhoDados}, nomeMetodo);
         }
 
         input.close();

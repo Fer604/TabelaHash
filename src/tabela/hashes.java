@@ -24,7 +24,7 @@ public class hashes {
         return x;//hash rápido, mas menos robusto
     }
     // Acha o próximo primo >= n (duplo hashing e encadeamento).
-    public int nextPrimeAtLeast(int n){
+    public static int nextPrimeAtLeast(int n){
         if (n <= 2) return 2;
         int p;
         if (n%2 == 0){
@@ -37,21 +37,21 @@ public class hashes {
         return p;
     }
     // Teste se é primo simples
-    public boolean isPrime(int x){
+    public static boolean isPrime(int x){
         if (x < 2) return false;
         if (x % 2 == 0) return x == 2;
         for (int i=3; i*(long)i <= x; i+=2) if (x % i == 0) return false;
         return true;
     }
     // Próxima potência de 2 >= v (útil para linear probing com máscara).
-    public int nextPow2(int v){
+    public static int nextPow2(int v){
         int p=1;
         while (p < v && p>0) p<<=1;
         if (p>0) return p;
         return v;
     }
     // Divisão inteira arredondando para cima (ceil).
-    public int ceilDiv(int a, int b){
+    public static int ceilDiv(int a, int b){
         return (a + b - 1) / b;
     }
 }

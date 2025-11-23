@@ -6,12 +6,15 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
     private int elementos;
     private int tamanhoTabela;
     private int funcaoHashBase;
+    private byte[] estado;
 
     public estrategiaDuplo(int tamanho) {
-        tabela = new registro[tamanho];
+        tamanhoTabela = hashes.nextPrimeAtLeast(tamanho);
+        tabela = new registro[tamanhoTabela];
         colisoes = 0;
         elementos = 0;
-        tamanhoTabela = tamanho;
+        //funciona melhor com tamanho da tabela primo
+        estado = new byte[tamanhoTabela];
     }
 
     // Primeira função hash (vareia)
@@ -25,53 +28,43 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
 
     // Segunda função hash auxiliar, conhecida mais intimamente como step(deve ser coprima com o tamanho)
     private int hash2(int chave) {//1..tamanhoTabela-1 garantindo que seja coprimo com tamanhoTabela primo
-        int s=((chave ^ 0x5bd1e995) & 0x7fffffff) % (tamanhoTabela-2);
+        int s=((chave ^ 0x5bd1e995) & 0x7fffffff) % (tamanhoTabela-2);//Este valor 0x5bd1e995 é uma constante,e zera o bit de sinal com &0x7fff...
+        //%tamanhoTabela-2 produz um valor entre 0 e tamanhoTabela−3
         return 1 + s;
+        /*Então o passo (step) fica entre 1 e tamanhoTabela−2.
+        Como tamanhoTabela é primo, isso garante que:
+        step é sempre não zero
+        step é coprimo com tamanhoTabela
+        A sonda cobre toda a tabela → evita ciclos menores do que M.
+         */
     }
-
     @Override
-    public void setHashBase(int b){
+    public void setHashBase(int b){//meio inutil(podia ser chamada no construtor) mas ajuda a deixar mais claro
         funcaoHashBase = b;
     }
 
     @Override
     public void inserir(registro r) {
         int chave = r.getCodigoNumerico();
-        int tentativa = 0;
-        int indice;
-
-        while (tentativa < tamanhoTabela) {
-            indice = floorMod(hash1(chave) + tentativa * hash2(chave), tamanhoTabela);//utiliza função hash da mesma forma em inserir e buscar
-
-            if (tabela[indice] == null) {
-                tabela[indice] = r;
-                elementos++;
+        int indice = hash1(chave);
+        int step =hash2(chave);
+        while (estado[indice]==1){//enquanto a posição que está tentando inserir estiver ocupada
+            if (tabela[indice].getCodigoNumerico()==chave) {// numero/chave/registro/valor repetido
                 return;
-            } else {
-                colisoes++;
-                tentativa++;
             }
+            indice+=step; if (indice>=tamanhoTabela) indice-=tamanhoTabela; // avança em saltos (tem melhor dispersão que linear)
+            colisoes++;
         }
+        tabela[indice]=r; estado[indice]=1; elementos++;
     }
 
     @Override
     public boolean buscar(registro r) {
         int chave = r.getCodigoNumerico();
-        int tentativa = 0;
-        int indice;
-
-        while (tentativa < tamanhoTabela) {
-            indice = floorMod(hash1(chave) + tentativa * hash2(chave), tamanhoTabela);//utiliza função hash da mesma forma em inserir e buscar
-
-
-            if (tabela[indice] == null) {
-                return false;
-            }
-            if (tabela[indice].getCodigoNumerico() == chave) {
-                return true;
-            }
-
-            tentativa++;
+        int indice=hash1(chave), step=hash2(chave);
+        while (estado[indice]!=0){
+            if (estado[indice]==1 && tabela[indice].getCodigoNumerico()==chave) return true;
+            indice+=step; if (indice>=tamanhoTabela) indice-=tamanhoTabela;
         }
         return false;
     }
@@ -96,48 +89,18 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
         return (double) elementos / tamanhoTabela;
     }
 
-
-
     @Override
     public void limpar() {
         for (int i = 0; i < tamanhoTabela; i++) {
             tabela[i] = null;
+            estado[i] = 0;
         }
         colisoes = 0;
         elementos = 0;
     }
     public double[] calcularGaps() {
-        int anterior = -1;
-        int menor = 2147483647;
-        int maior = 0;
-        int soma = 0;
-        int qtd = 0;
-
-        for (int i = 0; i < tamanhoTabela; i++) {
-            if (tabela[i] != null) {
-                if (anterior != -1) {
-                    int gap = i - anterior;
-                    soma += gap;
-                    if (gap < menor) {
-                        menor = gap;
-                    }
-                    if (gap > maior) {
-                        maior = gap;
-                    }
-                    qtd++;
-                }
-                anterior = i;
-            }
-        }
-
-        double media;
-        if (qtd > 0) {
-            media = (double) soma / qtd;
-        } else {
-            media = 0;
-        }
-
-        return new double[]{menor, maior, media};
+        double[] valores =  testeDesempenho.calculaGapsDeTabelaOcupada(estado,tamanhoTabela);
+        return valores;
     }
     private int moduloValor(int valor){
         if (valor <0){

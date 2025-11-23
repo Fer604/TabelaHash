@@ -35,4 +35,54 @@ public class testeDesempenho {
             tabela.limpar(); // limpa antes do próximo teste
         }
     }
+    static double[] calculaGapsDeTabelaOcupada(byte[] state, int tamanhoTabela){
+        int occupied=0;
+        for (int i=0;i<tamanhoTabela;i++) {
+            if (state[i] == 1) occupied++;
+        }
+
+        int minGap,maxGap;
+        double avgGap;
+
+        if (occupied<=1){ // casos triviais
+            minGap=0;
+            maxGap=tamanhoTabela-1;
+            if(occupied==0){
+                avgGap = tamanhoTabela;
+            }
+            else{
+                avgGap =(tamanhoTabela-1);
+            }
+            return new double[]{minGap,maxGap,avgGap};
+        }
+
+        int[] occ = new int[occupied];
+        int indice=0;
+        for (int i=0;i<tamanhoTabela;i++) {
+            if (state[i] == 1) occ[indice++] = i;
+        }
+
+        minGap = Integer.MAX_VALUE;
+        maxGap = Integer.MIN_VALUE;
+        long sum=0L;
+
+        for (int j=0;j<occupied;j++){
+            int a = occ[j];
+            int b = occ[(j+1)%occupied]; // circular
+            int gap;
+
+            if (b>a){
+                gap=(b-a-1);
+            }
+            else{
+                gap=(tamanhoTabela-(a-b)-1);
+            }
+
+            if (gap<minGap) minGap=gap;
+            if (gap>maxGap) maxGap=gap;
+            sum += gap;
+        }
+        avgGap = (double)sum / occupied;
+        return new double[]{minGap,maxGap,avgGap};
+    }
 }
