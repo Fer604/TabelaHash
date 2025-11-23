@@ -1,30 +1,37 @@
 package tabela;
 
-public class hashDuplo implements hashTable {
+public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPLO
     private registro[] tabela;
     private int colisoes;
     private int elementos;
     private int tamanhoTabela;
+    private int funcaoHashBase;
 
-    public hashDuplo(int tamanho) {
+    public estrategiaDuplo(int tamanho) {
         tabela = new registro[tamanho];
         colisoes = 0;
         elementos = 0;
         tamanhoTabela = tamanho;
     }
 
-    // Primeira função hash (resto da divisão)
+    // Primeira função hash (vareia)
     private int hash1(int chave) {
-        return moduloValor(chave) % tamanhoTabela;
+        switch (funcaoHashBase) {
+            case 0:return (hashes.hDiv(chave,tamanhoTabela));
+            case 1:return (hashes.hMul(chave));
+            default: return (hashes.hMisto(chave));
+        }
     }
 
-    // Segunda função hash (deve ser coprima com o tamanho)
-    private int hash2(int chave) {
-        int h = 1 + (moduloValor(chave) % (tamanhoTabela - 1));
-        if(h==0){
-            return 1;
-        }
-        return h; // garante que nunca será 0
+    // Segunda função hash auxiliar, conhecida mais intimamente como step(deve ser coprima com o tamanho)
+    private int hash2(int chave) {//1..tamanhoTabela-1 garantindo que seja coprimo com tamanhoTabela primo
+        int s=((chave ^ 0x5bd1e995) & 0x7fffffff) % (tamanhoTabela-2);
+        return 1 + s;
+    }
+
+    @Override
+    public void setHashBase(int b){
+        funcaoHashBase = b;
     }
 
     @Override
@@ -88,6 +95,8 @@ public class hashDuplo implements hashTable {
     public double getFatorCarga() {
         return (double) elementos / tamanhoTabela;
     }
+
+
 
     @Override
     public void limpar() {

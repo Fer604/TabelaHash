@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 import tabela.*;
@@ -34,15 +33,15 @@ public class Main {
 
             switch (opcao) {
                 case 1 -> {
-                    tabela = new hashLinear(tamanhoTabela);
+                    tabela = new estrategiaLinear(tamanhoTabela);
                     nomeMetodo = "Hash Linear";
                 }
                 case 2 -> {
-                    tabela = new hashDuplo(tamanhoTabela);
+                    tabela = new estrategiaDuplo(tamanhoTabela);
                     nomeMetodo = "Hash Duplo";
                 }
                 case 3 -> {
-                    tabela = new hashEncadeamento(tamanhoTabela);
+                    tabela = new estrategiaEncadeamento(tamanhoTabela);
                     nomeMetodo = "Hash Encadeamento";
                 }
                 default -> {

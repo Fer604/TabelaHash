@@ -17,4 +17,6 @@ public interface hashTable {
 
     void limpar();//sai sujeira
 
+    void setHashBase(int b);
+
 }

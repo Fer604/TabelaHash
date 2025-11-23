@@ -1,13 +1,13 @@
 package tabela;
 
-public class hashLinear implements hashTable {
+public class estrategiaLinear implements hashTable {
 
     private registro[] tabela;
     private int colisoes;
     private int elementos;
     private int tamanhoTabela;
 
-    public hashLinear(int tamanho){
+    public estrategiaLinear(int tamanho){ //REHASH LINEAR
         tabela = new registro[tamanho];
         colisoes = 0;
         elementos = 0;
@@ -79,6 +79,12 @@ public class hashLinear implements hashTable {
         colisoes = 0;
         elementos = 0;
     }
+
+    @Override
+    public void setHashBase(int b) {
+
+    }
+
     public double[] calcularGaps() {
         int anterior = -1;
         int menor = 2147483647; //int limite

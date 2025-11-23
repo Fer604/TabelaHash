@@ -2,13 +2,13 @@ package tabela;
 
 import lista.listaEncadeada;//
 
-public class hashEncadeamento implements hashTable{
+public class estrategiaEncadeamento implements hashTable{
     private listaEncadeada[] tabela;
     private int colisoes;
     private int elementos;
     private int tamanhoTabela;
 
-    public hashEncadeamento(int tamanho){
+    public estrategiaEncadeamento(int tamanho){
         tabela = new listaEncadeada[tamanho];
         colisoes = 0;
         elementos = 0;
@@ -59,6 +59,12 @@ public class hashEncadeamento implements hashTable{
         colisoes = 0;
         elementos = 0;
     }
+
+    @Override
+    public void setHashBase(int b) {
+
+    }
+
     public int[] maioresListas() {
         int[] maiores = new int[3];
         for (var lista : tabela) {
