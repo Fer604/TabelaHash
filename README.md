@@ -8,7 +8,7 @@
 
 O objetivo deste experimento foi **medir o tempo de busca de elementos** em diferentes implementações de **tabelas hash**:
 
-- **Linear **
+- **Linear**
 - **Duplo Hashing**
 - **Encadeamento Separado**
 
