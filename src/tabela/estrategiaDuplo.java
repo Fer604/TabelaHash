@@ -102,14 +102,4 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
         double[] valores =  testeDesempenho.calculaGapsDeTabelaOcupada(estado,tamanhoTabela);
         return valores;
     }
-    private int moduloValor(int valor){
-        if (valor <0){
-            valor = valor * -1;
-        }
-        return valor;
-    }
-    public static int floorMod(int a, int b) {//o nome é igual da ultima função q foi usada por conveniencia
-        return (a % b + b) % b;
-    }
-
 }

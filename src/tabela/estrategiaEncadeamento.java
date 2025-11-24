@@ -7,16 +7,32 @@ public class estrategiaEncadeamento implements hashTable{
     private int colisoes;
     private int elementos;
     private int tamanhoTabela;
+    private int[] len; //comprimento por "bucket"/slot/lista na tabela hash
+    private int funcaoHashBase;
+
 
     public estrategiaEncadeamento(int tamanho){
-        tabela = new listaEncadeada[tamanho];
+        tamanhoTabela = tamanho;
+        tabela = new listaEncadeada[tamanhoTabela];
+        len = new int[tamanhoTabela];
+        for(int i = 0; i < tamanhoTabela; i++) {
+            tabela[i] = new listaEncadeada();
+            len[i] = 0;
+        }
         colisoes = 0;
         elementos = 0;
-        tamanhoTabela = tamanho;
-        for(int i = 0; i < tamanho; i++){tabela[i] = new listaEncadeada();}
     }
     public int hash(int chave){
-        return moduloValor(chave) % tamanhoTabela;
+        switch (funcaoHashBase) {
+            case 0:return (hashes.hDiv(chave,tamanhoTabela));
+            case 1:return (hashes.hMul(chave));
+            default: return (hashes.hMisto(chave));
+        }
+    }
+
+    @Override
+    public void setHashBase(int b) {
+        funcaoHashBase = b;
     }
 
 
@@ -60,10 +76,7 @@ public class estrategiaEncadeamento implements hashTable{
         elementos = 0;
     }
 
-    @Override
-    public void setHashBase(int b) {
 
-    }
 
     public int[] maioresListas() {
         int[] maiores = new int[3];
