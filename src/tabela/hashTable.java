@@ -19,4 +19,6 @@ public interface hashTable {
 
     void setHashBase(int b);
 
+    double[] calcularGaps();
+
 }

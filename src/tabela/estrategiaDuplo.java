@@ -21,8 +21,8 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
     private int hash1(int chave) {
         switch (funcaoHashBase) {
             case 0:return (hashes.hDiv(chave,tamanhoTabela));
-            case 1:return (hashes.hMul(chave));
-            default: return (hashes.hMisto(chave));
+            case 1:return (hashes.hMul(chave)%tamanhoTabela);
+            default: return (hashes.hMisto(chave)%tamanhoTabela);
         }
     }
 
@@ -98,6 +98,8 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
         colisoes = 0;
         elementos = 0;
     }
+
+    @Override
     public double[] calcularGaps() {
         double[] valores =  testeDesempenho.calculaGapsDeTabelaOcupada(estado,tamanhoTabela);
         return valores;

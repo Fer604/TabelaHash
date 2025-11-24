@@ -2,11 +2,11 @@ package tabela;
 
 public class hashes {
     // Hash por divisão
-    public static int hDiv(int x, int M) {
+    public static int hDiv(int x, int tamanhoTabela) {
         x ^= (x >>> 16);//XOR com a própria versão deslocada 16 espalha bits altos para os 16 bits baixos
         x = x * 0x7feb352d;// constante "knuth-like"
         x ^= (x >>> 15);// misturar ainda mais, agora com deslocamento de 15 bits
-        return (x & 0x7fffffff) % M;//zera o bit de sinal e retorna no intervalo de 0 à M-1,produzindo o índice real na tabela hash
+        return (x & 0x7fffffff) % tamanhoTabela;//zera o bit de sinal e retorna no intervalo de 0 à M-1,produzindo o índice real na tabela hash
     }
     // Hash por multiplicação (usa constante de Knuth + mix)
     public static int hMul(int x) {

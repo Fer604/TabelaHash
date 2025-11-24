@@ -19,6 +19,9 @@ public class testeDesempenho {
             if (tabela instanceof estrategiaEncadeamento enc) {
                 int[] maiores = enc.maioresListas();
                 System.out.printf("  Maiores listas: %d, %d, %d%n", maiores[0], maiores[1], maiores[2]);
+                double[] gaps = enc.calcularGaps();
+                System.out.printf("  Gaps -> Menor: %.0f | Maior: %.0f | Média: %.2f%n",
+                        gaps[0], gaps[1], gaps[2]);
             }
 
             if (tabela instanceof estrategiaLinear linear) {

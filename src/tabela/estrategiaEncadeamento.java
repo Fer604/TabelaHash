@@ -39,8 +39,12 @@ public class estrategiaEncadeamento implements hashTable{
     @Override
     public void inserir(registro registro){
         int indice = hash(registro.getCodigoNumerico());
-        if (!tabela[indice].vazia()) colisoes++;//tinha que conta as colisões
-        tabela[indice].inserir(registro);
+
+        colisoes += len[indice];
+
+        tabela[indice].inserePrimeiro(registro);
+        len[indice] ++;
+
         elementos++;
     }
     @Override
@@ -71,7 +75,10 @@ public class estrategiaEncadeamento implements hashTable{
 
     @Override
     public void limpar(){
-        for (int i = 0; i < tamanhoTabela; i++){tabela[i] = new listaEncadeada();}
+        for (int i = 0; i < tamanhoTabela; i++){
+            tabela[i] = new listaEncadeada();
+            len[i] = 0;
+        }
         colisoes = 0;
         elementos = 0;
     }
@@ -79,7 +86,7 @@ public class estrategiaEncadeamento implements hashTable{
 
 
     public int[] maioresListas() {
-        int[] maiores = new int[3];
+        int[] maiores = {0,0,0};
         for (var lista : tabela) {
             if (lista != null) {
                 int tam = lista.tamanho();
@@ -97,30 +104,23 @@ public class estrategiaEncadeamento implements hashTable{
         }
         return maiores;
     }
-    public int moduloValor(int valor){
-        if (valor <0){
-            valor = valor* -1;
-        }
-        return valor;
-    }
-    public double[] calcularGaps() {
-        int anterior = -1;
-        int menor = 2147483647; //int limite
+
+    @Override
+    public double[] calcularGaps(){
+        int menor = Integer.MAX_VALUE;
         int maior = 0;
         int soma = 0;
         int qtd = 0;
 
-        for (int i = 0; i < tamanhoTabela; i++) {
-            if (tabela[i] != null) {
-                if (anterior != -1) {
+        int anterior = -1;
+
+        for (int i=0 ; i<tamanhoTabela ; i++){
+            if (len[i] > 0) {  // bucket ocupado
+                if (anterior != -1){
                     int gap = i - anterior;
                     soma += gap;
-                    if (gap < menor) {
-                        menor = gap;
-                    }
-                    if (gap > maior) {
-                        maior = gap;
-                    }
+                    if (gap < menor) menor = gap;
+                    if (gap > maior) maior = gap;
                     qtd++;
                 }
                 anterior = i;
@@ -128,11 +128,15 @@ public class estrategiaEncadeamento implements hashTable{
         }
 
         double media;
-        if (qtd > 0) {
-            media = (double) soma / qtd;
-        } else {
-            media = 0;
+        if(qtd > 0){
+            media  = (double)soma/qtd;
         }
+        else{
+            media  = 0;
+        }
+
+
+        if (menor == Integer.MAX_VALUE) menor = 0;//vai que
 
         return new double[]{menor, maior, media};
     }

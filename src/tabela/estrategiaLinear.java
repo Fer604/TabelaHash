@@ -6,52 +6,87 @@ public class estrategiaLinear implements hashTable {
     private int colisoes;
     private int elementos;
     private int tamanhoTabela;
+    private byte[] estado;
+    private int mask;
+    private int hashBase = 0;
 
     public estrategiaLinear(int tamanho){ //REHASH LINEAR
-        tabela = new registro[tamanho];
+        tamanhoTabela = tamanho;
+        tabela = new registro[tamanhoTabela];
+        estado = new byte[tamanhoTabela];
+
+        int pow2 = hashes.nextPow2(tamanhoTabela);
+        if (pow2 == tamanhoTabela){
+            mask = tamanhoTabela-1;
+        }
+        else{
+            mask =-1;
+        }
+
+
         colisoes = 0;
         elementos = 0;
-        tamanhoTabela = tamanho;
     }
 
-    private int hash(int chave, int tentativa){
-        return (chave+tentativa) % tamanhoTabela;
+    private int hash(int chave){
+        int h;
+
+        switch (hashBase) {
+            case 1:
+                h = hashes.hMul(chave);
+                break;
+            case 2:
+                h = hashes.hMisto(chave);
+                break;
+            default://divisao
+                h = chave;
+        }
+
+        // Se a tabela for potência de 2, uso máscara
+        if (mask != -1)
+            return (h & 0x7fffffff) & mask;
+
+        // Caso contrário, hash por divisão tradicional
+        return hashes.hDiv(h, tamanhoTabela);
     }
     @Override
     public void inserir(registro r) {
-        int tentativa = 0;
-        int indice;
-        while(tentativa < tamanhoTabela){
-            indice = hash(r.getCodigoNumerico(), tentativa);
-            if(tabela[indice] == null){
-                tabela[indice] = r;
-                elementos++;
-                return;
-            }
-            else{
-                tentativa++;
-                colisoes++;
-            }
+        int chave = r.getCodigoNumerico();
+        int indice = hash(chave);
+
+        while (estado[indice] == 1) {
+            if (tabela[indice].getCodigoNumerico() == chave)
+                return;  // já existe
+
+            // avançar linearmente
+            indice++;
+            if (indice == tamanhoTabela) indice = 0;
+
+            colisoes++;
         }
+
+        tabela[indice] = r;
+        estado[indice] = 1;
+        elementos++;
     }
+
 
     @Override
     public boolean buscar(registro r) {
-        int tentativa = 0;
-        int indice;
+        int chave = r.getCodigoNumerico();
+        int indice = hash(chave);
 
-        while (tentativa < tamanhoTabela) {
-            indice = hash(r.getCodigoNumerico(), tentativa);
-
-            if (tabela[indice] == null)
-                return false; // parou em espaço vazio
-            if (tabela[indice].getCodigoNumerico() == r.getCodigoNumerico())
+        while (estado[indice] != 0) {
+            if (estado[indice] == 1 &&
+                    tabela[indice].getCodigoNumerico() == chave)
                 return true;
 
-            tentativa++;
+            indice++;
+            if (indice == tamanhoTabela) indice = 0;
         }
         return false;
     }
+
 
 
     @Override
@@ -82,41 +117,13 @@ public class estrategiaLinear implements hashTable {
 
     @Override
     public void setHashBase(int b) {
-
+        hashBase = b;
     }
 
+    @Override
     public double[] calcularGaps() {
-        int anterior = -1;
-        int menor = 2147483647; //int limite
-        int maior = 0;
-        int soma = 0;
-        int qtd = 0;
-
-        for (int i = 0; i < tamanhoTabela; i++) {
-            if (tabela[i] != null) {
-                if (anterior != -1) {
-                    int gap = i - anterior;
-                    soma += gap;
-                    if (gap < menor) {
-                        menor = gap;
-                    }
-                    if (gap > maior) {
-                        maior = gap;
-                    }
-                    qtd++;
-                }
-                anterior = i;
-            }
-        }
-
-        double media;
-        if (qtd > 0) {
-            media = (double) soma / qtd;
-        } else {
-            media = 0;
-        }
-
-        return new double[]{menor, maior, media};
+        double[] valores = testeDesempenho.calculaGapsDeTabelaOcupada(estado, tamanhoTabela);
+        return valores;
     }
 
 
