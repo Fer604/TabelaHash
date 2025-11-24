@@ -24,9 +24,9 @@ public class estrategiaEncadeamento implements hashTable{
     }
     public int hash(int chave){
         switch (funcaoHashBase) {
-            case 0:return (hashes.hDiv(chave,tamanhoTabela));
-            case 1:return (hashes.hMul(chave));
-            default: return (hashes.hMisto(chave));
+            case 0:return (hashes.hMul(chave) & 0x7fffffff)%tamanhoTabela;
+            case 1: return (hashes.hMisto(chave) & 0x7fffffff)%tamanhoTabela;
+            default:return (hashes.hDiv(chave,tamanhoTabela));
         }
     }
 

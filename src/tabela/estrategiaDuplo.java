@@ -20,9 +20,9 @@ public class estrategiaDuplo implements hashTable { //ESTRATÉGIA REHASHING DUPL
     // Primeira função hash (vareia)
     private int hash1(int chave) {
         switch (funcaoHashBase) {
-            case 0:return (hashes.hDiv(chave,tamanhoTabela));
-            case 1:return (hashes.hMul(chave)%tamanhoTabela);
-            default: return (hashes.hMisto(chave)%tamanhoTabela);
+            case 0:return (hashes.hMul(chave) & 0x7fffffff)%tamanhoTabela;
+            case 1:return (hashes.hMisto(chave) & 0x7fffffff)%tamanhoTabela;
+            default:return (hashes.hDiv(chave,tamanhoTabela));
         }
     }
 
