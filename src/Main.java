@@ -23,38 +23,45 @@ public class Main {
                 {2, 1}, // tabela 10M x dados 1M    -> fator ≈ 0.1
                 {2, 2}  // tabela 10M x dados 10M   -> fator ≈ 1
         };
-
-        for (int[] combo : combinacoes) {
-            int tamanhoTabela = tamanhosTabela[combo[0]];
-            int tamanhoDados = tamanhosDados[combo[1]];
-
-            hashTable tabela = null;
-            String nomeMetodo = "";
-
-            switch (opcao) {
-                case 1 -> {
-                    tabela = new estrategiaLinear(tamanhoTabela);
-                    nomeMetodo = "Hash Linear";
-                }
-                case 2 -> {
-                    tabela = new estrategiaDuplo(tamanhoTabela);
-                    nomeMetodo = "Hash Duplo";
-                }
-                case 3 -> {
-                    tabela = new estrategiaEncadeamento(tamanhoTabela);
-                    nomeMetodo = "Hash Encadeamento";
-                }
-                default -> {
-                    System.out.println("Opção inválida!");
-                    input.close();
-                    return;
-                }
+        for (int hashBase = 0; hashBase < 3; hashBase++) {
+            String nomeHash = "";
+            switch (hashBase) {
+                case 0 -> nomeHash = "Hash Multiplicação";
+                case 1 -> nomeHash = "Hash Misto";
+                case 2 -> nomeHash = "Hash Divisão";
             }
+            for (int[] combo : combinacoes) {
+                int tamanhoTabela = tamanhosTabela[combo[0]];
+                int tamanhoDados = tamanhosDados[combo[1]];
 
-            System.out.println("\n=== Testando " + nomeMetodo + " ===");
-            testeDesempenho.executar(tabela, tabela.getTamanho(), new int[]{tamanhoDados}, nomeMetodo);
+                hashTable tabela = null;
+                String nomeEstrategia = "";
+
+                switch (opcao) {
+                    case 1 -> {
+                        tabela = new estrategiaLinear(tamanhoTabela);
+                        nomeEstrategia = "Linear";
+                    }
+                    case 2 -> {
+                        tabela = new estrategiaDuplo(tamanhoTabela);
+                        nomeEstrategia = "Duplo";
+                    }
+                    case 3 -> {
+                        tabela = new estrategiaEncadeamento(tamanhoTabela);
+                        nomeEstrategia = "Encadeamento";
+                    }
+                    default -> {
+                        System.out.println("Opção inválida!");
+                        input.close();
+                        return;
+                    }
+                }
+                tabela.setHashBase(hashBase);
+
+                System.out.println("\n=== Testando " + nomeEstrategia + " ===");
+                testeDesempenho.executar(tabela, tabela.getTamanho(), new int[]{tamanhoDados}, nomeEstrategia,nomeHash);
+            }
         }
-
         input.close();
     }
 }
